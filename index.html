@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+<title>MPEG MIAF Conformance Software Wasm demo</title>
+<style>
+  body { font-family: sans-serif; }
+</style>
+</head>
+<body>
+    <h1>MPEG MIAF Conformance Software</h1>
+    <p>This software checks the conformance of file to the MPEG MIAF standard. Beware this is an on-going project and not all features of MIAF are supported yet. You can submit <a href="https://github.com/rbouqueau/ComplianceWarden-wasm">issues or pull requests</a>.</p>
+    <p>Select a MIAF file: <input type="file" id="files" name="files[]"/></p>
+    <br/>
+    <script src="ComplianceWarden.js"></script>
+    <script>
+        var fileArray = undefined;
+        let spec = null;
+
+        function fileSelection(evt) {
+            var files = evt.target.files;
+            if (files[0]) {
+                var f = files[0];
+                var reader = new FileReader();
+                reader.onload = (function(file) {
+                    return function(e) {
+                        fileArray = e.target.result;
+                        if (fileArray.byteLength > 0) {
+                            check_compliance();
+                        }
+                    };
+                })(f);
+
+                reader.readAsArrayBuffer(f);
+            }
+        }
+
+        function check_compliance() {
+            var name = Module._malloc(4*4+1);
+            var spec_name = new String("miaf");
+            stringToUTF8(spec_name, name, 4*4+1);
+            spec = Module._specFindC(name);
+            let comp_mem = Module._malloc(fileArray.byteLength);
+            Module.HEAPU8.set(new Uint8Array(fileArray), comp_mem);
+            Module._specCheckC(spec, comp_mem, fileArray.byteLength);
+        }
+
+        document.getElementById('files').addEventListener('change', fileSelection, false);
+    </script>
+  </body>
+</html>
