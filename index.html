@@ -10,6 +10,8 @@
     <h1>MPEG MIAF Conformance Software</h1>
     <p>This software checks the conformance of file to the MPEG MIAF standard. Beware this is an on-going project and not all features of MIAF are supported yet. You can submit <a href="https://github.com/rbouqueau/ComplianceWarden-wasm">issues or pull requests</a>.</p>
     <p>Select a MIAF file: <input type="file" id="files" name="files[]"/> <select id="specs" name="specs"><option value="miaf">MIAF</option><option value="heif">HEIF</option></select></p>
+    <p>Result:</p>
+    <div id="compliance_report"><p></p></div>
     <br/>
     <script src="ComplianceWarden.js"></script>
     <script>
