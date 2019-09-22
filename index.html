@@ -24,20 +24,21 @@
     <script src="ComplianceWarden.js"></script>
     <script>
         var fileArray = undefined;
+        var filename = undefined;
         let spec = null;
 
         function fileSelection(evt) {
             var files = evt.target.files;
             if (files[0]) {
-                var f = files[0];
+                filename = files[0];
                 var reader = new FileReader();
                 reader.onload = (function(file) {
                     return function(e) {
                         fileArray = e.target.result;
                     };
-                })(f);
+                })(filename);
 
-                reader.readAsArrayBuffer(f);
+                reader.readAsArrayBuffer(filename);
             }
         }
 
@@ -48,16 +49,20 @@
 
             var name = Module._malloc(4*4+1);
             stringToUTF8(spec_name, name, 4*4+1);
-
             spec = Module._specFindC(name);
+            Module._free(name);
 
             let comp_mem = Module._malloc(fileArray.byteLength);
             Module.HEAPU8.set(new Uint8Array(fileArray), comp_mem);
 
             document.getElementById("compliance_report").innerHTML = "";
             document.getElementById("compliance_tool_errors").innerHTML = "";
-
-            Module._specCheckC(spec, comp_mem, fileArray.byteLength);
+            
+            var file_name = new String(filename);
+            var fn = Module._malloc(file_name.byteLength*4+1);
+            stringToUTF8(file_name, fn, file_name.byteLength*4+1);
+            Module._specCheckC(spec, fn, comp_mem, fileArray.byteLength);
+            Module._free(fn);
 
             document.getElementById('submit').disabled = true;
         }
