@@ -30,7 +30,7 @@
         function fileSelection(evt) {
             var files = evt.target.files;
             if (files[0]) {
-                filename = files[0];
+                filename = files[0].name;
                 var reader = new FileReader();
                 reader.onload = (function(file) {
                     return function(e) {
@@ -38,7 +38,7 @@
                     };
                 })(filename);
 
-                reader.readAsArrayBuffer(filename);
+                reader.readAsArrayBuffer(files[0]);
             }
         }
 
@@ -59,8 +59,9 @@
             document.getElementById("compliance_tool_errors").innerHTML = "";
             
             var file_name = new String(filename);
-            var fn = Module._malloc(file_name.byteLength*4+1);
-            stringToUTF8(file_name, fn, file_name.byteLength*4+1);
+            var fn = Module._malloc(file_name.length*4+1);
+            stringToUTF8(file_name, fn, file_name.length*4+1);
+
             Module._specCheckC(spec, fn, comp_mem, fileArray.byteLength);
             Module._free(fn);
 
