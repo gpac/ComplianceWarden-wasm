@@ -58,13 +58,14 @@
 
             document.getElementById("compliance_report").innerHTML = "";
             document.getElementById("compliance_tool_errors").innerHTML = "";
-            
+
             var file_name = new String(filename);
             var fn = Module._malloc(file_name.length*4+1);
             stringToUTF8(file_name, fn, file_name.length*4+1);
 
             Module._specCheckC(spec, fn, comp_mem, fileArray.byteLength);
             Module._free(fn);
+            Module._free(comp_mem);
 
             document.getElementById('submit').disabled = true;
         }
