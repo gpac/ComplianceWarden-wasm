@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>AOM AVIF Validator (Wasm demo)</title>
+    <style>
+      body { font-family: sans-serif; }
+    </style>
+  </head>
+  <body>
+    <h1>Validator for AOM codec image formats (AVIF)</h1>
+    <p>This software checks the conformance of file to the AOM AVIF specification. Beware this is an on-going project and not all features of AVIF are supported yet. You can submit <a href="https://github.com/gpac/ComplianceWarden/issues">issues or pull requests</a> on the <a href="https://github.com/gpac/ComplianceWarden">source repository</a>.</p>
+    <p><b>Note that your files are not uploaded in any way. Wasm executes the software on your computer.</b></p>
+    <p>
+      <label for="file">Select an AVIF file: </label><input type="file" id="files" name="files[]"/>
+      <button id="submit">Submit</button>
+    </p>
+    <p>Result:</p>
+    <div id="compliance_report"><p></p></div>
+    <br/>
+    <p>Tool errors:</p>
+    <div id="compliance_tool_errors"><p></p></div>
+    <br/>
+    <script src="ComplianceWarden.js"></script>
+    <script>
+        var fileArray = undefined;
+        var filename = undefined;
+        let spec = null;
+
+        function fileSelection(evt) {
+            var files = evt.target.files;
+            if (files[0]) {
+                filename = files[0].name;
+                var reader = new FileReader();
+                reader.onload = (function(file) {
+                    return function(e) {
+                        fileArray = e.target.result;
+                    };
+                })(filename);
+
+                reader.readAsArrayBuffer(files[0]);
+            }
+        }
+
+        function check_compliance() {
+            var spec_name = "heif";
+
+            var name = Module._malloc(4*4+1);
+            stringToUTF8(spec_name, name, 4*4+1);
+            spec = Module._specFindC(name);
+            Module._free(name);
+
+            let comp_mem = Module._malloc(fileArray.byteLength);
+            Module.HEAPU8.set(new Uint8Array(fileArray), comp_mem);
+
+            document.getElementById("compliance_report").innerHTML = "";
+            document.getElementById("compliance_tool_errors").innerHTML = "";
+
+            var file_name = new String(filename);
+            var fn = Module._malloc(file_name.length*4+1);
+            stringToUTF8(file_name, fn, file_name.length*4+1);
+
+            Module._specCheckC(spec, fn, comp_mem, fileArray.byteLength);
+            Module._free(fn);
+            Module._free(comp_mem);
+
+            document.getElementById('submit').disabled = true;
+        }
+
+        document.getElementById('files').addEventListener('change', fileSelection, false);
+        document.getElementById('submit').addEventListener('click', check_compliance, false);
+    </script>
+  </body>
+</html>
