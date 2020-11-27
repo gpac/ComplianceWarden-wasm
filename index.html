@@ -30,14 +30,14 @@
   </nav>
   <div class="container">
     <div class="jumbotron">
-      <h1 class="display-4">Conformance Software for MPEG-based image formats (MIAF, HEIF, ...)</h1>
+      <h1 class="display-4">Conformance Software for MPEG-based image formats (MIAF, HEIF, ...) - version </h1>
       <p class="lead">This software checks the conformance of file to the MPEG MIAF standard. Beware this is an on-going
         project and not all features of MIAF are supported yet. You can submit <a
           href="https://github.com/gpac/ComplianceWarden/issues">issues or pull requests</a> on the <a
           href="https://github.com/gpac/ComplianceWarden">source repository</a>.</p>
       </p>
       <hr class="my-4">
-      <p>Note that your files are not uploaded in any way. Wasm executes the software on your computer.</p>
+      <p>Note that your files are not uploaded in any way. Web Assembly (Wasm) executes the software on your computer.</p>
     </div>
     <div class="row">
       <div class="col">
@@ -46,7 +46,8 @@
             <div class="col">
               <div class="custom-file">
                 <input type="file" class="custom-file-input" id="files" name="files[]">
-                <label class="custom-file-label" for="files">Select a MIAF file:</label></div>
+                <label class="custom-file-label" for="files">Select a MIAF file:</label>
+              </div>
             </div>
             <div class="col">
               <select class="custom-select" id="specs" name="specs">
@@ -55,18 +56,17 @@
               </select>
             </div>
             <div class="col">
-              <button class="btn btn-primary" id="submit" >Submit</button>
+              <button class="btn btn-primary" id="submit">Submit</button>
             </div>
           </div>
-      </div>
-
+        </div>
       </form>
     </div>
 
-    <p>Result:</p>
+    <h3>Result:</h3>
     <div id="compliance_report"><code></code></div>
     <br/>
-    <p>Tool errors:</p>
+    <h3>Tool errors:</h3>
     <div id="compliance_tool_errors"><code></code></div>
   </div>
 
@@ -112,8 +112,8 @@
       var fn = Module._malloc(file_name.length * 4 + 1);
       stringToUTF8(file_name, fn, file_name.length * 4 + 1);
 
-      Module._printVersion();
       Module._specCheckC(spec, fn, comp_mem, fileArray.byteLength);
+
       Module._free(fn);
       Module._free(comp_mem);
     }
