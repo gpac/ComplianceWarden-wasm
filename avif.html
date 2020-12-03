@@ -21,7 +21,7 @@
             <a class="nav-link" href="https://aomediacodec.github.io/av1-avif/" target="_blank">AVIF specification</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="https://github.com/gpac/ComplianceWarden" target="_blank">Alliance for Open Media (AOM)</a>
+            <a class="nav-link" href="https://aomedia.org/" target="_blank">Alliance for Open Media (AOM)</a>
           </li>
         </ul>
       </div>
@@ -29,13 +29,13 @@
 
     <div class="container">
       <div class="jumbotron">
-        <h1 class="display-4">Validator for AOM AV1 image files (AVIF) - version </h1>
-        <p class="lead">This software checks the conformance of file to the <a >AVIF specification</a> made by the <a href="https://aomedia.org/">Alliance for Open Media (AOM)</a>.</p>
+        <h1 class="display-4">Validator for AOM AV1 image files (AVIF)</h1>
+        <p class="lead">This software checks the conformance of file to the <a href="https://aomediacodec.github.io/av1-avif/">AVIF specification</a> made by the <a href="https://aomedia.org/">Alliance for Open Media (AOM)</a>.</p>
         </p>
         <hr class="my-4">
         <p>Beware this is an on-going project and not all features of AVIF are supported yet. You can submit <a href="https://github.com/gpac/ComplianceWarden/issues">issues or pull requests</a> on the <a >source repository</a>.</p>
         <p><b>Note that your files are not uploaded in any way. Web Assembly (Wasm) executes the software on your computer.</b></p>
-        <p>Here you can find a (<a href="https://www.gpac-licensing.com/downloads/valid.avif">valid sample</a> and an <a href="https://www.gpac-licensing.com/downloads/invalid.avif">invalid one</a>)</p>
+        <p>Here you can find <!--a <a href="https://www.gpac-licensing.com/downloads/valid.avif">valid sample</a> and -->an <a href="https://www.gpac-licensing.com/downloads/invalid.avif">invalid sample</a>.</p>
       </div> 
       
       <div class="row">
@@ -107,10 +107,6 @@
 
           Module._free(fn);
           Module._free(comp_mem);
-        }
-
-        function print_version() {
-          Module._printVersion();
         }
 
         document.getElementById('files').addEventListener('change', fileSelection, false);

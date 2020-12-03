@@ -30,7 +30,7 @@
   </nav>
   <div class="container">
     <div class="jumbotron">
-      <h1 class="display-4">Conformance Software for MPEG-based image formats (MIAF, HEIF, ...) - version </h1>
+      <h1 class="display-4">Conformance Software for MPEG-based image formats (MIAF, HEIF, ...)</h1>
       <p class="lead">This software checks the conformance of file to the MPEG MIAF standard. Beware this is an on-going
         project and not all features of MIAF are supported yet. You can submit <a
           href="https://github.com/gpac/ComplianceWarden/issues">issues or pull requests</a> on the <a
@@ -112,6 +112,7 @@
       var fn = Module._malloc(file_name.length * 4 + 1);
       stringToUTF8(file_name, fn, file_name.length * 4 + 1);
 
+      Module._printVersion();
       Module._specCheckC(spec, fn, comp_mem, fileArray.byteLength);
 
       Module._free(fn);
